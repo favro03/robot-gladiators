@@ -36,21 +36,26 @@ var randomNumber = function(min, max) {
   };
   // fight function (now with parameter for enemy's object holding name, health, and attack values)
   var fight = function(enemy) {
+    //keep track of who goes first
+    var isPlayerTurn = true;
+
+    //randomly change turn order
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    }
     while (playerInfo.health > 0 && enemy.health > 0) {
+        if (isPlayerTurn){
       // ask player if they'd like to fight or run
-      if (fightOrSkip()) {
+        if (fightOrSkip()) {
           //if true, leave fight by breaking loop
           break;
       }
       
-  
       // generate random damage value based on player's attack power
       var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
   
       enemy.health = Math.max(0, enemy.health - damage);
-      console.log(
-        playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
-      );
+      console.log(playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.');
   
       // check enemy's health
       if (enemy.health <= 0) {
@@ -64,15 +69,14 @@ var randomNumber = function(min, max) {
       } else {
         window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
       }
-  
+    //player gets attacked first
+    } else {  
       // remove players's health by subtracting the amount set in the enemy.attack variable
       var damage = randomNumber(enemy.attack - 3, enemy.attack);
   
       playerInfo.health = Math.max(0, playerInfo.health - damage);
       
-      console.log(
-        enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
-      );
+      console.log(enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.');
   
       // check player's health
       if (playerInfo.health <= 0) {
@@ -83,7 +87,10 @@ var randomNumber = function(min, max) {
         window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
       }
     }
-  };
+    //switch turn order for next round
+    isPlayerTurn = !isPlayerTurn;
+    }   
+};
   
   // function to start a new game
   var startGame = function() {
@@ -222,6 +229,7 @@ var randomNumber = function(min, max) {
     }
   };
   
+  
   // enemy information
   var enemyInfo = [
     {
@@ -247,3 +255,4 @@ var randomNumber = function(min, max) {
   
   /* RUN GAME */
   startGame();
+ 
